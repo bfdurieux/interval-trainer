@@ -1,0 +1,62 @@
+.container {
+  height: 100dvh;
+  width: 100dvw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-selector {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.header-text {
+  margin: 2rem;
+}
+
+.result, .answer-input {
+  margin: 2rem;
+}
+
+.answer-select {
+  font-family: "Roboto Mono", serif;
+  padding: .5rem;
+  margin-right: 2px;
+}
+
+.submit-button {
+  margin-left: 2px;
+  border-radius: .3rem;
+  width: 5.3rem;
+  height: 2.5rem;
+  background-color: #9DF5FB;
+  font-family: "Roboto Mono", serif;
+}
+
+
+.result {
+  padding: 2rem 4rem;
+  font-family: "Roboto Mono", serif;
+}
+
+
+.correct {
+  border-radius: .5rem;
+  border: lightgreen .2rem solid;
+}
+.wrong {
+  border-radius: .5rem;
+  border: indianred .2rem solid;
+}
+
+button {
+  cursor: pointer;
+  border: black .1rem solid;
+}
+
+button:active {
+  border: #9DF5FB .2rem solid;
+}
