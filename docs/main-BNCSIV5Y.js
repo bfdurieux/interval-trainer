@@ -168,4 +168,4 @@ ${n.map((r,o)=>`${o+1}) ${r.toString()}`).join(`
       background: var(--red-to-pink-to-purple-horizontal-gradient);
       margin-block: 1.5rem;
     }
-  }`]});let e=t;return e})();var Wd=[{path:"",component:No},{path:"**",redirectTo:""}];var qd={providers:[Gd(Wd)]};dd(No,qd).catch(e=>console.error(e));
+  }`]});let e=t;return e})();var Wd=[{path:"home",component:No},{path:"",redirectTo:"home"},{path:"**",redirectTo:""}];var qd={providers:[Gd(Wd)]};dd(No,qd).catch(e=>console.error(e));
