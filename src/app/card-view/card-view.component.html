@@ -1,12 +1,12 @@
 <div class="container">
   <div class="language-selector">
-    <select name="language" [(ngModel)]="selectedLanguage" (change)="onLanguageChange()" class="language-selector__select">
+    <select name="language" (change)="onLanguageChange($event)" class="language-selector__select">
       <option value="EN">EN</option>
       <option value="BR">BR</option>
     </select>
   </div>
 
-  <div class="header-text">{{ selectedLanguage == 'EN' ? 'Click to randomize notes:' : 'Clique para atualizar notas:' }}</div>
+  <div class="header-text">{{ appStore.appLanguage() == 'EN' ? 'Click to randomize notes:' : 'Clique para atualizar notas:' }}</div>
   <app-card (cardFlippedEvent)="onCardFlipped()">{{fromNote}} - {{toNote}}</app-card>
 
   @if (showResult) {
@@ -16,12 +16,14 @@
   } @else {
     <div class="answer-input">
       <select class="answer-select" name="answer" [(ngModel)]="answer">
-        <option selected disabled hidden [ngValue]="null">{{ selectedLanguage == 'EN' ? 'Select an interval' : 'Selecione um intervalo' }}</option>
-        @for (interval of intervalList; let idx = $index; track intervalList) {
+        <option selected disabled hidden [ngValue]="null">{{ appStore.appLanguage() === 'EN' ? 'Select an interval' : 'Selecione um intervalo' }}</option>
+        @for (interval of appStore.intervalList(); track appStore.intervalList()) {
           <option [ngValue]="interval">{{interval.key}}</option>
         }
       </select>
-      <button class="submit-button" type="button" (click)="onSubmitClicked()">{{ selectedLanguage == 'EN' ? 'Submit' : 'Confirmar'}}</button>
+      <button class="submit-button" type="button" (click)="onSubmitClicked()">
+        {{ appStore.appLanguage() === 'EN' ? 'Submit' : 'Confirmar'}}
+      </button>
     </div>
   }
 </div>

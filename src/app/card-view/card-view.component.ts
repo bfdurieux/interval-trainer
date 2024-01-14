@@ -24,16 +24,14 @@ export class CardViewComponent {
   result: string = '';
   isAnswerCorrect: boolean = false;
   answer: KeyValuePair | null = null;
-  intervalList: KeyValuePair[] = [];
 
   @ViewChild(CardComponent) cardComponent?: CardComponent;
 
-  constructor(private appStore: AppStoreService) {
+  constructor(public appStore: AppStoreService) {
   }
 
   ngOnInit() {
     this.randomizeNotes();
-    this.appStore.intervalList.subscribe(x => this.intervalList = x);
   }
   onSubmitClicked() {
     this.calculateResult();
@@ -42,26 +40,25 @@ export class CardViewComponent {
   }
 
   private calculateResult() {
-    const intervals = this.appStore.intervalList.getValue();
     const distance = this.findNoteDistance(this.fromNote, this.toNote);
-    const result = intervals.find(x => x.value === distance);
+    const result = this.appStore.intervalList().find(x => x.value === distance);
     const answerValue = this.answer?.value;
     this.result = result?.key ?? '';
     this.isAnswerCorrect = answerValue === result?.value;
   }
 
   findNoteDistance(fromNote: string, toNote: string): number {
-    const fromNoteIndex = this.appStore.indexedNotes.getValue().findIndex(x => x === fromNote);
-    const toNoteIndex = this.appStore.indexedNotes.getValue().findIndex(x => x === toNote);
+    const fromNoteIndex = this.appStore.indexedNotes().findIndex(x => x === fromNote);
+    const toNoteIndex = this.appStore.indexedNotes().findIndex(x => x === toNote);
     let distance = 0;
     if (fromNoteIndex === toNoteIndex)
       return 0;
 
     for (let i = fromNoteIndex; true; i++) {
-      if (i === this.appStore.indexedNotes.getValue().length)
+      if (i === this.appStore.indexedNotes().length)
         i = 0;
 
-      if (this.appStore.indexedNotes.getValue()[i] == this.appStore.indexedNotes.getValue()[toNoteIndex])
+      if (this.appStore.indexedNotes()[i] == this.appStore.indexedNotes()[toNoteIndex])
         return distance;
 
       distance++;
@@ -79,16 +76,11 @@ export class CardViewComponent {
   }
 
   getRandomNote() {
-    return this.appStore.indexedNotes.getValue()[Math.floor(Math.random() * this.appStore.indexedNotes.getValue().length)];
+    return this.appStore.indexedNotes()[Math.floor(Math.random() * this.appStore.indexedNotes().length)];
   }
 
-  protected readonly Object = Object;
-  protected readonly Intervals = Intervals;
-  selectedLanguage: 'EN' | 'BR' = 'EN';
-  protected readonly onlanguagechange = onlanguagechange;
-
-  onLanguageChange() {
-    this.appStore.setAppLanguage(this.selectedLanguage);
+  onLanguageChange($event: 'EN' | 'BR') {
+    this.appStore.appLanguage.set($event);
     this.onCardFlipped();
   }
 }
