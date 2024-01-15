@@ -1,0 +1,21 @@
+<dialog class="reference-table__dialog" [attr.open]="showDialog() ? 'open' : null">
+  <p>
+    {{
+      appStore.appLanguage() === "EN"
+      ? "How to use: Click on the notes to randomize a new interval. Guess the interval using the dropdown. Submit and the correct interval will be shown - with a red border if you guessed wrong, with a green border if you guessed correctly."
+      : "Como utilizar: Clique nas notas para gerar um novo intervalo aleatório. Adivinhe o intervalo utilizando as opções do dropdown. Confirme e o intervalo correto será exibido - com borda vermelha se respondido incorretamente, com borda verde se respondido corretamente."
+    }}
+  </p>
+  <table class="reference-table__table">
+    <tr class="reference-table__table-header">
+      <th>{{appStore.appLanguage() === "EN" ? "Interval": "Intervalo"}}</th>
+      <th>{{appStore.appLanguage() === "EN" ? "# of half steps" : "Distancia (meio-tom)"}}</th>
+    </tr>
+    @for(row of appStore.intervalList(); track appStore.intervalList()) {
+      <tr class="reference-table__table-data-row">
+        <td>{{ row.key }}</td>
+        <td>{{ row.value }}</td>
+      </tr>
+    }
+  </table>
+</dialog>

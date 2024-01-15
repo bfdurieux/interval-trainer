@@ -3,8 +3,8 @@ import {CardComponent} from "../card/card.component";
 import {AppStoreService} from "../app.store.service";
 import {FormsModule} from "@angular/forms";
 import {NgClass} from "@angular/common";
-import {Intervals} from "../types/intervals";
 import {KeyValuePair} from "../types/key-value-pair";
+import {ReferenceTableDialog} from "../reference-table/reference-table-dialog.component";
 
 @Component({
   selector: 'app-card-view',
@@ -12,7 +12,8 @@ import {KeyValuePair} from "../types/key-value-pair";
   imports: [
     CardComponent,
     FormsModule,
-    NgClass
+    NgClass,
+    ReferenceTableDialog
   ],
   templateUrl: './card-view.component.html',
   styleUrl: './card-view.component.scss'
@@ -24,8 +25,11 @@ export class CardViewComponent {
   result: string = '';
   isAnswerCorrect: boolean = false;
   answer: KeyValuePair | null = null;
+  selectedLanguage: "EN" | "BR" = "EN";
 
   @ViewChild(CardComponent) cardComponent?: CardComponent;
+
+  showDialog: WritableSignal<boolean> = signal(false);
 
   constructor(public appStore: AppStoreService) {
   }
@@ -79,8 +83,12 @@ export class CardViewComponent {
     return this.appStore.indexedNotes()[Math.floor(Math.random() * this.appStore.indexedNotes().length)];
   }
 
-  onLanguageChange($event: 'EN' | 'BR') {
-    this.appStore.appLanguage.set($event);
+  onLanguageChange() {
+    this.appStore.setAppLanguage(this.selectedLanguage);
     this.onCardFlipped();
+  }
+
+  toggleReferenceTable() {
+    this.showDialog.set(!this.showDialog());
   }
 }

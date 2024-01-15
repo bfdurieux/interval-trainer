@@ -1,9 +1,14 @@
 <div class="container">
   <div class="language-selector">
-    <select name="language" (change)="onLanguageChange($event)" class="language-selector__select">
+    <select name="language" [(ngModel)]="selectedLanguage" (change)="onLanguageChange()" class="language-selector__select">
       <option value="EN">EN</option>
       <option value="BR">BR</option>
     </select>
+  </div>
+
+  <div class="reference-table">
+    <button class="reference-table__button" type="button" (click)="toggleReferenceTable()">help</button>
+    <app-reference-table-dialog [showDialog]="showDialog"></app-reference-table-dialog>
   </div>
 
   <div class="header-text">{{ appStore.appLanguage() == 'EN' ? 'Click to randomize notes:' : 'Clique para atualizar notas:' }}</div>
