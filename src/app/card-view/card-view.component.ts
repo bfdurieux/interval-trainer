@@ -5,6 +5,8 @@ import {FormsModule} from "@angular/forms";
 import {NgClass} from "@angular/common";
 import {KeyValuePair} from "../types/key-value-pair";
 import {ReferenceTableDialog} from "../reference-table/reference-table-dialog.component";
+import {ScoreBoardComponent} from "../score-board/score-board.component";
+import {EndgameDialogComponent} from "../endgame-dialog/endgame-dialog.component";
 
 @Component({
   selector: 'app-card-view',
@@ -13,7 +15,9 @@ import {ReferenceTableDialog} from "../reference-table/reference-table-dialog.co
     CardComponent,
     FormsModule,
     NgClass,
-    ReferenceTableDialog
+    ReferenceTableDialog,
+    ScoreBoardComponent,
+    EndgameDialogComponent
   ],
   templateUrl: './card-view.component.html',
   styleUrl: './card-view.component.scss'
@@ -28,8 +32,11 @@ export class CardViewComponent {
   selectedLanguage: "EN" | "BR" = "EN";
 
   @ViewChild(CardComponent) cardComponent?: CardComponent;
+  @ViewChild(ScoreBoardComponent) scoreBoardComponent?: ScoreBoardComponent;
 
   showDialog: WritableSignal<boolean> = signal(false);
+  playerHasWon: WritableSignal<boolean> = signal(false);
+  showEndgameDialog: boolean = false;
 
   constructor(public appStore: AppStoreService) {
   }
@@ -37,8 +44,15 @@ export class CardViewComponent {
   ngOnInit() {
     this.randomizeNotes();
   }
-  onSubmitClicked() {
+
+  onSubmitClicked($event: MouseEvent) {
+    $event.stopPropagation();
     this.calculateResult();
+    this.isAnswerCorrect
+      ? this.scoreBoardComponent?.addPoints()
+      : this.scoreBoardComponent?.subtractPoints();
+    if (this.showEndgameDialog)
+        return;
     this.showResult = true;
     this.answer = null;
   }
@@ -69,7 +83,7 @@ export class CardViewComponent {
     }
   }
 
-  onCardFlipped() {
+  onCardClicked() {
     this.randomizeNotes();
     this.showResult = false;
   }
@@ -85,10 +99,17 @@ export class CardViewComponent {
 
   onLanguageChange() {
     this.appStore.setAppLanguage(this.selectedLanguage);
-    this.onCardFlipped();
+    this.onCardClicked();
   }
 
   toggleReferenceTable() {
     this.showDialog.set(!this.showDialog());
+  }
+
+  onHasWonEvent(hasWon: boolean) {
+    debugger
+    this.playerHasWon.set(hasWon);
+    this.onCardClicked();
+    this.showEndgameDialog = true;
   }
 }

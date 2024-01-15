@@ -77,3 +77,24 @@ button:active {
     border-color: white;
   }
 }
+
+.score-board {
+  position: absolute;
+  top: $top-button-position;
+}
+
+.overlay {
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+.endgame-dialog {
+  z-index: 3;
+}
+

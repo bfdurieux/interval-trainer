@@ -1,0 +1,8 @@
+<dialog open [ngClass]="playerHasWon ? 'win' : 'lose'" (click)="closeDialogEvent.emit()">
+  @if(playerHasWon) {
+    {{appStore.appLanguage() === 'EN' ? 'You Win!' : 'Voce venceu!'}}
+    <app-fireworks></app-fireworks>
+  } @else {
+    {{appStore.appLanguage() === 'EN' ? 'You Lose!' : 'Voce perdeu!'}}
+  }
+</dialog>

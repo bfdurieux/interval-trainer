@@ -1,0 +1,17 @@
+dialog {
+  width: 10rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.win {
+  border: .1rem forestgreen solid;
+  border-radius: .8rem;
+}
+
+.lose {
+  border: .1rem indianred solid;
+  border-radius: .8rem;
+}

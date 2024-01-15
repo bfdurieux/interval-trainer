@@ -1,3 +1,7 @@
+@if(showEndgameDialog) {
+  <div class="overlay" (click)="showEndgameDialog = false"></div>
+}
+
 <div class="container">
   <div class="language-selector">
     <select name="language" [(ngModel)]="selectedLanguage" (change)="onLanguageChange()" class="language-selector__select">
@@ -6,13 +10,21 @@
     </select>
   </div>
 
+  <div class="score-board">
+    <app-score-board (hasWonEvent)="onHasWonEvent($event)"></app-score-board>
+  </div>
+
   <div class="reference-table">
     <button class="reference-table__button" type="button" (click)="toggleReferenceTable()">help</button>
     <app-reference-table-dialog [showDialog]="showDialog"></app-reference-table-dialog>
   </div>
 
+  @if(showEndgameDialog) {
+    <app-endgame-dialog class="endgame-dialog" (closeDialogEvent)="showEndgameDialog = false" [playerHasWon]="playerHasWon()"></app-endgame-dialog>
+  }
+
   <div class="header-text">{{ appStore.appLanguage() == 'EN' ? 'Click to randomize notes:' : 'Clique para atualizar notas:' }}</div>
-  <app-card (cardFlippedEvent)="onCardFlipped()">{{fromNote}} - {{toNote}}</app-card>
+  <app-card (cardFlippedEvent)="onCardClicked()">{{fromNote}} - {{toNote}}</app-card>
 
   @if (showResult) {
     <div class="result" [ngClass]="isAnswerCorrect ? 'correct' : 'wrong'">
@@ -26,7 +38,7 @@
           <option [ngValue]="interval">{{interval.key}}</option>
         }
       </select>
-      <button class="submit-button" type="button" (click)="onSubmitClicked()">
+      <button class="submit-button" type="button" (click)="onSubmitClicked($event)">
         {{ appStore.appLanguage() === 'EN' ? 'Submit' : 'Confirmar'}}
       </button>
     </div>
